@@ -32,7 +32,7 @@ uuid = "repository.python"
 
 def commands():
     env.CMAKE_MODULE_PATH.append("{root}/cmake")
-    env.PATH.append("{root}/bin")
+    env.PATH.prepend("{root}/bin")
     env.LD_LIBRARY_PATH.prepend("{root}/lib")
     if building:
         env.PYTHON_INCLUDE_DIRS = "{root}/include"
