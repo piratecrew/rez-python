@@ -27,6 +27,6 @@ install:
   - rez-bind python
 
 script:
-  sed -i s/version.*=.*/version=\"${VERSION}\"/ package.py
-  rez-build -i
+  - sed -i s/version.*=.*/version=\"${VERSION}\"/ package.py
+  - rez-build -i
 
