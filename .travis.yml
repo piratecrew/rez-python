@@ -12,3 +12,7 @@ before_install:
   - git clone https://github.com/nerdvegas/rez.git
   - cd rez
   - python ./install.py -v ../rez
+
+install:
+  rez-build
+
