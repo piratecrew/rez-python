@@ -13,7 +13,12 @@ before_install:
   - cd rez
   - python ./install.py -v /tmp/rez
   - cd ..
+  - export PATH=/tmp/rez/bin/rez:$PATH
+  - rez-bind platform
+  - rez-bind arch
+  - rez-bind os
+  - rez-bind python
 
 install:
-  /tmp/rez/bin/rez/rez-build
+  rez-build
 
