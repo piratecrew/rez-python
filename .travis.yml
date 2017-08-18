@@ -9,6 +9,8 @@ branches:
 
 before_install:
   - sudo apt-get -qq update
+
+install:
   - git clone https://github.com/nerdvegas/rez.git
   - cd rez
   - python ./install.py -v /tmp/rez
@@ -20,6 +22,6 @@ before_install:
   - rez-bind os
   - rez-bind python
 
-install:
+script:
   rez-build -i
 
