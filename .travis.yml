@@ -11,8 +11,9 @@ before_install:
   - sudo apt-get -qq update
   - git clone https://github.com/nerdvegas/rez.git
   - cd rez
-  - python ./install.py -v ../rez
+  - python ./install.py -v /tmp/rez
+  - cd ..
 
 install:
-  rez-build
+  /tmp/rez/bin/rez/rez-build
 
