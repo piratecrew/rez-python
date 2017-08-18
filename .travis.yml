@@ -14,11 +14,12 @@ before_install:
   - python ./install.py -v /tmp/rez
   - cd ..
   - export PATH=/tmp/rez/bin/rez:$PATH
+  - mkdir -p /home/travis/packages
   - rez-bind platform
   - rez-bind arch
   - rez-bind os
   - rez-bind python
 
 install:
-  rez-build
+  rez-build -i
 
