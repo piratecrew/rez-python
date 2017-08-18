@@ -1,11 +1,11 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 include(RezBuild)
-include(RezRepository)
 include(ExternalProject)
 
+
 # ------------------------------------------------------------------------------
-# Build Dependencies
+# Build Dependencies to build all standard modules
 #
 # Centos:
 # yum groupinstall 'Development Tools'
@@ -18,31 +18,21 @@ include(ExternalProject)
 # yum install bzip2-devel
 # ------------------------------------------------------------------------------
 
-
 set(python_version $ENV{REZ_BUILD_PROJECT_VERSION})
-
-set(url_python http://www.python.org/ftp/python/${python_version}/Python-${python_version}.tgz)
-
-set(make_args -j$ENV{REZ_BUILD_THREAD_COUNT} VERBOSE=1)
-
-if(${REZ_BUILD_INSTALL})
-    set(install_cmd make install ${make_args})
-else()
-    set(install_cmd "")
-endif()
 
 ExternalProject_add(
     python
-    URL ${url_python}
+    URL http://www.python.org/ftp/python/${python_version}/Python-${python_version}.tgz
     PREFIX python
     UPDATE_COMMAND ""
-    CONFIGURE_COMMAND ./configure --prefix=${CMAKE_INSTALL_PREFIX} --enable-shared --enable-unicode=ucs4
-    INSTALL_COMMAND "${install_cmd}"
+    CONFIGURE_COMMAND ./configure --prefix=${CMAKE_INSTALL_PREFIX} --enable-shared --enable-ipv6 --enable-unicode=ucs4
+    INSTALL_COMMAND make install VERBOSE=1
+    ALWAYS 1
+    BUILD_COMMAND make -j$ENV{REZ_BUILD_THREAD_COUNT} VERBOSE=1
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND make ${make_args}
 )
 
-rez_install_files(
-    cmake/python.cmake
+install(
+    FILES cmake/FindPython.cmake cmake/python.cmake
     DESTINATION .
 )

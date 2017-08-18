@@ -1,6 +1,6 @@
 name = "python"
 
-version = "2.7.11"
+version = "2.7.13"
 
 authors = [
     "Guido van Rossum"
@@ -11,9 +11,11 @@ description = \
     The Python programming language.
     """
 
-variants = [
-    ["platform-linux"]
-]
+@early()
+def variants():
+    from rez.package_py_utils import expand_requires
+    requires = ["platform-**"]
+    return [expand_requires(*requires)]
 
 tools = [
     "2to3",
@@ -28,12 +30,10 @@ tools = [
     "smtpd.py"
 ]
 
-uuid = "repository.python"
+uuid = "rezpo.python"
 
 def commands():
-    env.CMAKE_MODULE_PATH.append("{root}/cmake")
-    env.PATH.prepend("{root}/bin")
+    env.PATH.append("{root}/bin")
     env.LD_LIBRARY_PATH.prepend("{root}/lib")
     if building:
-        env.PYTHON_INCLUDE_DIRS = "{root}/include"
-        env.PYTHON_LIBRARIES = "{root}/lib/python2.7/config/libpython2.7.a"
+        env.CMAKE_MODULE_PATH.append("{root}/cmake")
