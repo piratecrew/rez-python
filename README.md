@@ -2,6 +2,7 @@
 Rez Package for python
 ----
 [![Build Status](https://travis-ci.org/piratecrew/rez-python.svg?branch=master)](https://travis-ci.org/piratecrew/rez-python)
+
 Build status id for versions:
   - 2.7.13
   - 2.7.12
