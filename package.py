@@ -30,8 +30,6 @@ tools = [
     "smtpd.py"
 ]
 
-uuid = "rezpo.python"
-
 def commands():
     env.PATH.append("{root}/bin")
     env.LD_LIBRARY_PATH.prepend("{root}/lib")

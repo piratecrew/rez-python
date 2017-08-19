@@ -34,5 +34,5 @@ ExternalProject_add(
 
 install(
     FILES cmake/FindPython.cmake cmake/python.cmake
-    DESTINATION .
+    DESTINATION cmake
 )
