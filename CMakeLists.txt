@@ -25,7 +25,7 @@ ExternalProject_add(
     URL http://www.python.org/ftp/python/${python_version}/Python-${python_version}.tgz
     PREFIX python
     UPDATE_COMMAND ""
-    CONFIGURE_COMMAND ./configure --prefix=${CMAKE_INSTALL_PREFIX} --enable-shared --enable-ipv6 --enable-unicode=ucs4
+    CONFIGURE_COMMAND ./configure --prefix=${CMAKE_INSTALL_PREFIX} --enable-shared --enable-ipv6 --enable-unicode=ucs4  LDFLAGS=-Wl,-rpath,'$$ORIGIN/../lib/'
     INSTALL_COMMAND make install VERBOSE=1
     ALWAYS 1
     BUILD_COMMAND make -j$ENV{REZ_BUILD_THREAD_COUNT} VERBOSE=1
