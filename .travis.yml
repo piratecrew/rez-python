@@ -4,6 +4,8 @@ dist: trusty
 language: cpp
 
 env:
+  - VERSION=2.7.15
+  - VERSION=2.7.14
   - VERSION=2.7.13
   - VERSION=2.7.12
   - VERSION=2.7.11

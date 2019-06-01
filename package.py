@@ -1,6 +1,6 @@
 name = "python"
 
-version = "2.7.13"
+version = "2.7.15"
 
 authors = [
     "Guido van Rossum"
