@@ -58,6 +58,32 @@ jobs:
       - run:
           name: Test Python 2.7.5
           command: '/tmp/REZ/rez/bin/rez/rez-env python-2.7.5 -- python -c "import sys;print sys.version"'
+  build_2_7_10:
+    executor: rez-executor
+    steps:
+      - run: apt-get update && apt-get install -y cmake
+      - attach_workspace:
+          at: /tmp/REZ
+      - checkout
+      - run:
+          name: Build Python 2.7.10
+          command: 'sed -i s/version.*=.*/version=\"2.7.10\"/ package.py && /tmp/REZ/rez/bin/rez/rez-build -i'
+      - run:
+          name: Test Python 2.7.10
+          command: '/tmp/REZ/rez/bin/rez/rez-env python-2.7.10 -- python -c "import sys;print sys.version"'
+  build_2_7_15:
+    executor: rez-executor
+    steps:
+      - run: apt-get update && apt-get install -y cmake
+      - attach_workspace:
+          at: /tmp/REZ
+      - checkout
+      - run:
+          name: Build Python 2.7.15
+          command: 'sed -i s/version.*=.*/version=\"2.7.15\"/ package.py && /tmp/REZ/rez/bin/rez/rez-build -i'
+      - run:
+          name: Test Python 2.7.15
+          command: '/tmp/REZ/rez/bin/rez/rez-env python-2.7.15 -- python -c "import sys;print sys.version"'
 workflows:
   version: 2
 
@@ -65,5 +91,11 @@ workflows:
     jobs:
       - prepare
       - build_2_7_5:
+          requires:
+            - prepare
+      - build_2_7_10:
+          requires:
+            - prepare
+      - build_2_7_15:
           requires:
             - prepare
