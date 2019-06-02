@@ -1,0 +1,69 @@
+version: 2.1
+
+executors:
+  rez-executor:
+    docker:
+      - image: buildpack-deps:bionic
+    working_directory: /tmp/REZ/build_dir
+    environment:
+        - REZ_REPO_PAYLOAD_DIR=/tmp/REZ/REPO
+        - REZ_LOCAL_PACKAGES_PATH=/tmp/REZ/packages
+        - REZ_PACKAGES_PATH=/tmp/REZ/packages
+
+jobs:
+  prepare:
+    executor: rez-executor
+    steps:
+      - run: apt-get update && apt-get install -y cmake
+      - checkout
+      - restore_cache:
+          key: -v3-rez
+      - run: |
+          mkdir -p /tmp/REZ/packages
+          if [[ -d "/tmp/REZ/rez/bin/rez" ]]; then
+              echo "Cache Exists Skipping!"
+              exit 0
+          fi
+          set -e
+          OLDPWD=$PWD
+          cd /tmp
+          git clone https://github.com/nerdvegas/rez.git
+          cd rez
+          python ./install.py -v /tmp/REZ/rez
+          cd ..
+          /tmp/REZ/rez/bin/rez/rez-bind platform
+          /tmp/REZ/rez/bin/rez/rez-bind arch
+          /tmp/REZ/rez/bin/rez/rez-bind os
+          cd $PWD
+      - save_cache:
+          key: -v3-rez
+          paths:
+            - /tmp/REZ/rez
+            - /tmp/REZ/packages
+      - persist_to_workspace:
+          root: /tmp/REZ/
+          paths:
+            - rez
+            - packages
+  build_2_7_5:
+    executor: rez-executor
+    steps:
+      - run: apt-get update && apt-get install -y cmake
+      - attach_workspace:
+          at: /tmp/REZ
+      - checkout
+      - run:
+          name: Build Python 2.7.5
+          command: 'sed -i s/version.*=.*/version=\"2.7.5\"/ package.py && /tmp/REZ/rez/bin/rez/rez-build -i'
+      - run:
+          name: Test Python 2.7.5
+          command: '/tmp/REZ/rez/bin/rez/rez-env python-2.7.5 -- python -c "import sys;print sys.version"'
+workflows:
+  version: 2
+
+  build_test:
+    jobs:
+      - prepare
+      - build_2_7_5:
+          requires:
+            - prepare
